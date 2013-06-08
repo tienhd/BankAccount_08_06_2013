@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -43,13 +45,27 @@ public class GetAccountTest {
         String accountNumber = "1234567890";
         BankAccount.openAccount(accountNumber);
 
-        ArgumentCaptor<BankAccountDTO> accountDTORecord = ArgumentCaptor.forClass(BankAccountDTO.class);
-        //when(mockAccountDao.getAccount(account.getAccountNumber())).thenReturn(account);
-        BankAccountDTO accountFromDB=BankAccount.getAccount(accountNumber);
-        when(mockBankAccountDao.getAccount(accountNumber)).thenReturn(accountFromDB) ;
+        ArgumentCaptor <BankAccountDTO> argumentList = ArgumentCaptor.forClass(BankAccountDTO.class);
+        verify(mockBankAccountDao,times(1)).save(argumentList.capture());
+        BankAccountDTO argumentDTO = argumentList.getAllValues().get(0);
+        System.out.println(argumentDTO.getBalance() + " " + argumentDTO.getAccountNumber());
 
-         assertEquals("1234567890",accountFromDB.getAccountNumber());
+        when(mockBankAccountDao.getAccount(accountNumber)).thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                String accountNumber2 = "1234567890";
+                BankAccountDTO answerDTO = new BankAccountDTO(accountNumber2);
+                return answerDTO;
+            }
+        });
 
+        BankAccountDTO answerDTO = mockBankAccountDao.getAccount(accountNumber);
+        System.out.println(answerDTO.getBalance() + " " + answerDTO.getAccountNumber());
+
+        assertEquals(mockBankAccountDao.getAccount(accountNumber).getAccountNumber(), accountNumber);
+        assertEquals(mockBankAccountDao.getAccount(accountNumber).getBalance(), 0, 0.001);
+
+        assertEquals(answerDTO,argumentDTO);
     }
 
 }
