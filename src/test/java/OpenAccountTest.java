@@ -1,8 +1,12 @@
+
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.util.List;
 
 import static org.mockito.Mockito.*;
-
+import static org.junit.Assert.*;
 /**
  * Created with IntelliJ IDEA.
  * User: sqv-nbt
@@ -26,5 +30,15 @@ public class OpenAccountTest {
         verify(mockBankAccountDao,times(1));
     }
 
+    @Test
+    public void testOpenNewAccountWithZeroBalanceAndIsPersistent() {
+        String accountNumber = "1234567890";
+        BankAccount.openAccount(accountNumber);
 
+        ArgumentCaptor <BankAccountDTO> argumentList = ArgumentCaptor.forClass(BankAccountDTO.class);
+        verify(mockBankAccountDao,times(2)).save(argumentList.capture());
+        List<BankAccountDTO> saveRecord = argumentList.getAllValues();
+        assertEquals(saveRecord.get(1).getBalance(), 0.0, 0.001);
+        assertEquals(saveRecord.get(1).getAccountNumber(), accountNumber);
+    }
 }
