@@ -1,9 +1,6 @@
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -11,10 +8,10 @@ import static org.junit.Assert.*;
  * Created with IntelliJ IDEA.
  * User: sqv-nbt
  * Date: 6/8/13
- * Time: 1:59 PM
+ * Time: 2:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class OpenAccountTest {
+public class GetAccountTest {
     BankAccountDao mockBankAccountDao = mock (BankAccountDao.class);
 
     @Before
@@ -26,19 +23,21 @@ public class OpenAccountTest {
     @Test
     public void testConnectionFromBankAccountToMockDao() {
         String accountNumber = "1234567890";
-        BankAccount.openAccount(accountNumber);
-        verify(mockBankAccountDao,times(0));
+        BankAccountDTO bankAccountDTO = BankAccount.getAccount(accountNumber);
+        //verify(mockBankAccountDao,times(0));
     }
 
     @Test
-    public void testOpenNewAccountWithZeroBalanceAndIsPersistent() {
+    public void testGetAccountInformation() {
         String accountNumber = "1234567890";
-        BankAccount.openAccount(accountNumber);
+        BankAccountDTO bankAccountDTO = BankAccount.getAccount(accountNumber);
 
-        ArgumentCaptor <BankAccountDTO> argumentList = ArgumentCaptor.forClass(BankAccountDTO.class);
-        verify(mockBankAccountDao,times(1)).save(argumentList.capture());
-        List<BankAccountDTO> saveRecord = argumentList.getAllValues();
-        assertEquals(saveRecord.get(0).getBalance(), 0.0, 0.001);
-        assertEquals(saveRecord.get(0).getAccountNumber(), accountNumber);
+        ArgumentCaptor<String> accountArgument = ArgumentCaptor.forClass(String.class);
+        verify(mockBankAccountDao, times(1)).getAccount(accountArgument.capture());
+
+        assertEquals(accountArgument.getAllValues().get(0),accountNumber);
+
     }
+
+
 }
