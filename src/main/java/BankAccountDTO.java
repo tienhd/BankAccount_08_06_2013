@@ -9,11 +9,30 @@ public class BankAccountDTO {
     private String accountNumber;
     private double balance;
 
+    public BankAccountDTO () {
+        this.balance = 0;
+        this.accountNumber = "";
+    }
+
+    public BankAccountDTO (String accountNumber) {
+        this.balance = 0;
+        this.accountNumber = accountNumber;
+    }
+
     public String getAccountNumber() {
         return accountNumber;
     }
 
     public double getBalance() {
         return balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof BankAccountDTO) {
+            BankAccountDTO BankAccountDTOObj = (BankAccountDTO) o;
+            return ((accountNumber.equals(BankAccountDTOObj.getBalance())) && accountNumber.equals(BankAccountDTOObj.getAccountNumber()));
+        }
+        return false;
     }
 }

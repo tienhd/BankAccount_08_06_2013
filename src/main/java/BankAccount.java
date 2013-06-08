@@ -6,9 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 public class BankAccount {
-    public static void setBankAccountDao(BankAccountDao bankAccountDao) {
+    public static BankAccountDao bankAccountDao;
+    public static void setBankAccountDao(BankAccountDao mockBankAccountDao) {
+        bankAccountDao = mockBankAccountDao;
     }
 
     public static void openAccount(String accountNumber) {
+        BankAccountDTO bankAccountDTO = new BankAccountDTO(accountNumber);
+        bankAccountDao.save(bankAccountDTO);
     }
 }
