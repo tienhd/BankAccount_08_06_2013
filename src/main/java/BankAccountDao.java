@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,14 +9,13 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class BankAccountDao {
-    public ArrayList<BankAccountDTO> listBankAccount = new ArrayList<BankAccountDTO>() ;
 
     public BankAccountDao () {
-        listBankAccount.clear();
+
     }
 
     public void save(BankAccountDTO bankAccountDTO) {
-        listBankAccount.add(bankAccountDTO);
+
     }
 
     public BankAccountDTO getAccount(String accountNumber) {
