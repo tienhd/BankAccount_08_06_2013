@@ -36,8 +36,20 @@ public class GetAccountTest {
         verify(mockBankAccountDao, times(1)).getAccount(accountArgument.capture());
 
         assertEquals(accountArgument.getAllValues().get(0),accountNumber);
-
     }
 
+    @Test
+    public void testOpenAccountThenGetTheAccountInformation() {
+        String accountNumber = "1234567890";
+        BankAccount.openAccount(accountNumber);
+
+        ArgumentCaptor<BankAccountDTO> accountDTORecord = ArgumentCaptor.forClass(BankAccountDTO.class);
+        //when(mockAccountDao.getAccount(account.getAccountNumber())).thenReturn(account);
+        BankAccountDTO accountFromDB=BankAccount.getAccount(accountNumber);
+        when(mockBankAccountDao.getAccount(accountNumber)).thenReturn(accountFromDB) ;
+
+         assertEquals("1234567890",accountFromDB.getAccountNumber());
+
+    }
 
 }

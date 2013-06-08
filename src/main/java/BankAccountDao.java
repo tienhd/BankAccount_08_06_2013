@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: sqv-nbt
@@ -6,8 +8,14 @@
  * To change this template use File | Settings | File Templates.
  */
 public class BankAccountDao {
-    public void save(BankAccountDTO bankAccountDTO) {
+    public ArrayList<BankAccountDTO> listBankAccount = new ArrayList<BankAccountDTO>() ;
 
+    public BankAccountDao () {
+        listBankAccount.clear();
+    }
+
+    public void save(BankAccountDTO bankAccountDTO) {
+        listBankAccount.add(bankAccountDTO);
     }
 
     public BankAccountDTO getAccount(String accountNumber) {
