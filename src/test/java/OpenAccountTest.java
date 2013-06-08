@@ -27,7 +27,7 @@ public class OpenAccountTest {
     public void testConnectionFromBankAccountToMockDao() {
         String accountNumber = "1234567890";
         BankAccount.openAccount(accountNumber);
-        verify(mockBankAccountDao,times(1));
+        //verify(mockBankAccountDao,times(1));
     }
 
     @Test
@@ -36,9 +36,9 @@ public class OpenAccountTest {
         BankAccount.openAccount(accountNumber);
 
         ArgumentCaptor <BankAccountDTO> argumentList = ArgumentCaptor.forClass(BankAccountDTO.class);
-        verify(mockBankAccountDao,times(2)).save(argumentList.capture());
+        verify(mockBankAccountDao,times(1)).save(argumentList.capture());
         List<BankAccountDTO> saveRecord = argumentList.getAllValues();
-        assertEquals(saveRecord.get(1).getBalance(), 0.0, 0.001);
-        assertEquals(saveRecord.get(1).getAccountNumber(), accountNumber);
+        assertEquals(saveRecord.get(0).getBalance(), 0.0, 0.001);
+        assertEquals(saveRecord.get(0).getAccountNumber(), accountNumber);
     }
 }
